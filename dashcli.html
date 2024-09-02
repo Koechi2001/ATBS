@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Client Dashboard</title>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #f4f4f9;
+        }
+        .header {
+            background: #006370;
+            color: #fff;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        .header .logo {
+            display: flex;
+            align-items: center;
+        }
+        .header .logo img {
+            height: 40px;
+            margin-right: 10px;
+        }
+        .header .icons {
+            display: flex;
+            align-items: center;
+        }
+        .header .icons img {
+            height: 18px;
+            margin-left: 20px;
+            cursor: pointer;
+        }
+        .header .dropdown {
+            position: relative;
+            display: inline-block;
+        }
+        .header .dropdown-content {
+            display: none;
+            position: absolute;
+            right: 0;
+            background-color: #fff;
+            min-width: 160px;
+            box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+            z-index: 1;
+        }
+        .header .dropdown-content a {
+            color: black;
+            padding: 12px 16px;
+            text-decoration: none;
+            display: block;
+        }
+        .header .dropdown-content a:hover {
+             background-color: #f1f1f1;
+             color: #006370; /* Hover text color for dropdown options */
+        }
+
+        .header .dropdown:hover .dropdown-content {
+            display: block;
+        }
+        .container {
+            display: flex;
+        }
+        .upcoming-flights {
+            border: 1px solid #ccc;
+            padding: 10px;
+            margin-bottom: 20px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            border-radius: 5px;
+        }
+        .upcoming-flights h2 {
+            font-size: 18px;
+            margin-top: 0;
+            color: #6200ea;
+        }
+        .flight-item {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        .flight-item:last-child {
+            border-bottom: none;
+        }
+        .sidebar {
+            width: 250px;
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            padding: 20px;
+            box-sizing: border-box;
+            transition: width 0.3s;
+        }
+        .sidebar.collapsed {
+            width: 80px;
+        }
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+        .sidebar ul li {
+            padding: 10px 0;
+            font-size: 16px;
+        }
+        .sidebar ul li a {
+            color: #333;
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+        .sidebar ul li a:hover {
+            color: #006370; 
+        }
+        .sidebar ul li a img {
+            margin-right: 10px;
+            width: 24px;
+            height: 24px;
+        }
+        .sidebar ul li a span {
+            display: inline-block;
+        }
+        .sidebar.collapsed ul li a span {
+            display: none;
+        }
+        .sidebar .collapse-btn {
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            margin-top: 20px;
+        }
+        .main-content {
+            flex: 1;
+            padding: 20px;
+        }
+        .card {
+            background: #fff;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+            margin-bottom: 20px;
+            padding: 20px;
+            border-radius: 5px;
+        }
+        .card h2 {
+            margin-top: 0;
+        }
+        .card table {
+            width: 100%;
+            border-collapse: collapse;
+        }
+        .card table, .card th, .card td {
+            border: 1px solid #ddd;
+        }
+        .card th, .card td {
+            padding: 10px;
+            text-align: left;
+        }
+        .card input, .card select, .card button {
+            width: 100%;
+            padding: 10px;
+            margin-top: 10px;
+            box-sizing: border-box;
+        }
+        .card button {
+            background: #006370;
+            color: #fff;
+            border: none;
+            cursor: pointer;
+        }
+        .footer {
+            background: #006370;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+            display: none;
+        }
+        
+    </style>
+    <script>
+        function toggleSidebar() {
+            document.querySelector('.sidebar').classList.toggle('collapsed');
+        }
+        function toggleDropdown() {
+            var dropdownContent = document.querySelector('.dropdown-content');
+            dropdownContent.style.display = dropdownContent.style.display === 'block' ? 'none' : 'block';
+        }
+        window.onscroll = function() {
+            var footer = document.querySelector('.footer');
+            if ((window.innerHeight + window.scrollY) >= document.body.offsetHeight) {
+                footer.style.display = 'block';
+            } else {
+                footer.style.display = 'none';
+            }
+        };
+    </script>
+</head>
+<body>
+    <div class="header">
+        <div class="logo">
+            <img src="assets/img/heli.jpg" alt="Logo">
+            <span>Air Tour</span>
+        </div>
+        <div class="icons">
+            <img src="assets/icons/bell.png" alt="Notifications">
+            <img src="assets/icons/message.png" alt="Message">
+            <div class="dropdown">
+                <img src="assets/icons/dropdown-select.png" onclick="toggleDropdown()">
+                <div class="dropdown-content">
+                    <a href="settings.html">Settings</a>
+                    <a href="#">Logout</a>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="container">
+        <div class="sidebar">
+            <ul>
+                <li><a href="#"><img src="assets/icons/user.png" ><span>Profile</span></a></li>
+                <li><a href="#"><img src="assets/icons/flights.png" ><span>Upcoming Flights</span></a></li>
+                <li><a href="#"><img src="assets/icons/history.png" ><span>Booking History</span></a></li>
+                <li><a href="searchflight.html"><img src="assets/icons/search.png" ><span>Search Flights</span></a></li>
+                <li><a href="#"><img src="assets/icons/booking.png" ><span>Manage Bookings</span></a></li>
+                <li><a href="settings.html"><img src="assets/icons/settings.png" ><span>Settings</span></a></li>
+            </ul>
+            <div class="collapse-btn" onclick="toggleSidebar()">
+                <img src="assets/icons/menu.png">
+            </div>
+        </div>
+        <div class="main-content">
+            <div class="card">
+                <h1>Welcome to Your Dashboard, John Doe</h1>
+            </div>
+            <div class="upcoming-flights">
+                <h2>Upcoming Flights</h2>
+                <div id="flight-list">
+                    <!-- Flight items will be dynamically added here -->
+                </div>
+            </div>
+        
+            <script>
+                $(document).ready(function() {
+                    // Fetch data from PHP script using AJAX
+                    $.ajax({
+                        url: 'fetch_upcoming_flights.php',
+                        type: 'GET',
+                        dataType: 'json',
+                        success: function(data) {
+                            // Process the fetched data
+                            if (data && data.length > 0) {
+                                // Clear existing content
+                                $('#flight-list').empty();
+        
+                                // Iterate through the fetched data and create HTML elements
+                                $.each(data, function(index, flight) {
+                                    var flightHtml = '<div class="flight-item">';
+                                    flightHtml += '<strong>Flight ID:</strong> ' + flight.flight_id + '<br>';
+                                    flightHtml += '<strong>Route:</strong> ' + flight.route_id + '<br>';
+                                    flightHtml += '<strong>Departure Date:</strong> ' + flight.departure_date + '<br>';
+                                    flightHtml += '<strong>Departure Time:</strong> ' + flight.departure_time;
+                                    flightHtml += '</div>';
+                                    $('#flight-list').append(flightHtml);
+                                });
+                            } else {
+                                // Handle no data scenario
+                                $('#flight-list').html('<p>No upcoming flights found.</p>');
+                            }
+                        },
+                        error: function(xhr, status, error) {
+                            console.error('Error fetching upcoming flights:', error);
+                            $('#flight-list').html('<p>Error fetching data. Please try again later.</p>');
+                        }
+                    });
+                });
+            </script>
+            
+        </div>
+    </div>
+    <div class="footer">
+        &copy; 2024 Your Airline. All Rights Reserved.
+    </div>
+</body>
+</html>
+
